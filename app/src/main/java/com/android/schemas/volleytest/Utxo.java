@@ -1,6 +1,8 @@
 package com.android.schemas.volleytest;
 
-public class Utxo implements Comparable<Utxo> {
+import java.io.Serializable;
+
+public class Utxo implements Serializable,Comparable<Utxo> {
     private String account_alias;
     private String account_id;
     private String address;

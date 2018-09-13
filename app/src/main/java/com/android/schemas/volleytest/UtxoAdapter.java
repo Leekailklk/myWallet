@@ -30,6 +30,7 @@ public class UtxoAdapter extends ArrayAdapter<Utxo> {
             viewHolder.utxoAlias= (TextView) view.findViewById(R.id.utxo_alias);
             viewHolder.utxoAmount=(TextView) view.findViewById(R.id.utxo_amount);
             viewHolder.accountAlias=(TextView) view.findViewById(R.id.account_alias);
+            viewHolder.utxoID=(TextView) view.findViewById(R.id.utxo_id);
             view.setTag(viewHolder);// 将ViewHolder存储在View中
         } else {
             view = convertView;
@@ -38,8 +39,9 @@ public class UtxoAdapter extends ArrayAdapter<Utxo> {
 
         viewHolder.useIt.setChecked(utxo.Use_it());
         viewHolder.utxoAlias.setText(utxo.getAsset_alias());
-        viewHolder.utxoAmount.setText("      "+utxo.getAmount());
-        viewHolder.accountAlias.setText("  "+utxo.getAccount_alias());
+        viewHolder.utxoAmount.setText(""+utxo.getAmount());
+        viewHolder.accountAlias.setText(utxo.getAccount_alias());
+        viewHolder.utxoID.setText(utxo.getId());
         return view;
     }
     class ViewHolder {
@@ -47,6 +49,7 @@ public class UtxoAdapter extends ArrayAdapter<Utxo> {
         TextView utxoAlias;
         TextView utxoAmount;
         TextView accountAlias;
+        TextView utxoID;
     }
 
 }
