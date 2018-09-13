@@ -12,18 +12,22 @@
             android:id="@+id/utxo_alias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            android:gravity="center"
+            android:maxLines="1"
              />
         <TextView
             android:id="@+id/utxo_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:maxLines="1"
            />
     <TextView
             android:id="@+id/account_alias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            android:gravity="center"
+            android:textColor="#00ff00"
+            android:maxLines="1"
     />
 </LinearLayout>

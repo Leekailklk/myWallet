@@ -19,6 +19,7 @@ import java.net.URL;
 */
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -53,14 +54,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private EditText editText;
     private List<Utxo> utxoList = new ArrayList<Utxo>();
     private Button sendRequest;
-    private Button calUtxo;
+    private Button buildUtxo;
     private TextView responseText;
     private RequestQueue mRequestQueue;
     private ListView listView;
     private UtxoAdapter utxoAdapter;
     private long amount;
     private int num;
-
+private VolleyResponseErrorListener volleyResponseErrorListener;
     /*
      private Handler handler = new Handler() {
          public void handleMessage(Message msg) {
@@ -78,7 +79,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         //editText = (EditText) findViewById(R.id.edit_text);
         sendRequest = (Button) findViewById(R.id.send_request);
-        calUtxo = (Button) findViewById(R.id.cal_utxo);
+        buildUtxo = (Button) findViewById(R.id.build_utxo);
         listView = (ListView) findViewById(R.id.list_view);
 
 
@@ -114,9 +115,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.build_utxo:
+// 在此处添加逻辑
+                break;
+            case R.id.send_request:
+                SendQueryRequest();
+// 在此处添加逻辑
+                break;
+            default:
+                break;
+        }
 
+    }
 
-        getRequestQueue();
+    public void SendQueryRequest() {
+
+        getRequestQueue().add(buildQueryJsonRequest());
+    }
+
+    public JsonObjectRequest buildQueryJsonRequest() {
         String reqURL = "http://192.168.1.102:9888/list-unspent-outputs";
         //String reqURL =editText.getText().toString();
         //Map<String, Integer> content = new HashMap<String, Integer>();
@@ -128,8 +146,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         //JSONObject gsona=null;
 /*
         try {
@@ -168,7 +184,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                                 Gson gson = new Gson();
                                 Utxo utxo = gson.fromJson(jsonObject.toString(), Utxo.class);
-                                utxoList.add(utxo);
+                                if (utxo.getAsset_id().equals("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")) {
+                                    utxoList.add(utxo);
+                                }
+                                //utxoList.add(utxo);
                                 Log.d("utxo", utxo.toString());
                             }
 
@@ -184,38 +203,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         //responseText.setText(response.toString());
                         Log.d("data", response.toString());
                     }
-                }, new Response.ErrorListener() {
+                }, volleyResponseErrorListener) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG", error.getMessage(), error);
-            }
-
-        }) {
-
-
-            @Override
-
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                String encoding="";
-                encoding =new String(Base64.encodeBase64(("tester:d4d21b5e786a782b2c65013fc46373ed719fc0a4a52aae23d7cfefaa00db7e56").getBytes()));
-
-                String authorization = "Basic " + encoding;
-                headers.put("Authorization", authorization);
-                //headers.put("password", "d4d21b5e786a782b2c65013fc46373ed719fc0a4a52aae23d7cfefaa00db7e56");
-                return headers;
+                return setHeaders();
             }
         };
-            /*
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("address", "sm1qm78e4sx7cduf9qg680dsqrrhazgss9x7t3z062");
-                //map.put("params2", "value2");
-                return map;
-            }
-        };*/
-        mRequestQueue.add(jsonObjectRequest);
+        return jsonObjectRequest;
+    }
+
+    private Map<String, String> setHeaders() {
+        Map<String, String> headers = new HashMap<String, String>();
+        String encoding = "";
+        encoding = new String(Base64.encodeBase64(("tester:d4d21b5e786a782b2c65013fc46373ed719fc0a4a52aae23d7cfefaa00db7e56").getBytes()));
+
+        String authorization = "Basic " + encoding;
+        headers.put("Authorization", authorization);
+        return headers;
     }
 
     /**

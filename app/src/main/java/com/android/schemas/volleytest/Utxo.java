@@ -20,12 +20,10 @@ public class Utxo implements Comparable<Utxo> {
     @Override
     public int compareTo(Utxo o) {
        if(this.asset_alias.compareTo(o.asset_alias)==0) {
-           if (this.getAmount() > o.getAmount()) {
-               return 1;
-           } else if (this.getAmount() < o.getAmount()) {
-               return -1;
-           } else {
-               return 0;
+           if(this.account_alias.compareTo(o.account_alias)==0){
+          return (int)(this.getAmount()-o.getAmount());}
+          else{
+               return this.account_alias.compareTo(o.account_alias);
            }
        }
        else{

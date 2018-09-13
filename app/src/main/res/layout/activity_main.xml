@@ -8,10 +8,10 @@
             android:layout_height="wrap_content"
             android:text="get unspent outputs" />
     <Button
-            android:id="@+id/cal_utxo"
+            android:id="@+id/build_utxo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sum select utxo" />
+            android:text="build transaction" />
     <TextView
             android:id="@+id/text_response"
             android:layout_width="match_parent"
